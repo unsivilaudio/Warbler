@@ -34,8 +34,11 @@ const getMessage = async function (req, res, next) {
 
 const deleteMessage = async function (req, res, next) {
     try {
-        let foundMessage = await Message.findById(req.params.message_id);
-        await foundMessage.remove();
+        let foundMessage = await Message.findOne({
+            _id: req.params.message_id,
+        })
+            .remove()
+            .exec();
         return res.status(200).json(foundMessage);
     } catch (e) {
         return next(e.message);
